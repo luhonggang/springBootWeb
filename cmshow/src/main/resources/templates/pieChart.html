@@ -1,0 +1,71 @@
+<div id="pieChart" style="height:400px"></div>
+<script th:inline="javascript">
+    $(function () {
+        console.log("运行程序");
+        $.ajax({
+            url:'/queryPieForWebsite',
+            type:'POST',
+            async:"true", //默认是true,异步
+            dataType:"json",
+            data:null,
+            success:function(res){
+                loadPieDataForWebSite(res);
+                console.log(res)
+            }
+        });
+    });
+    function loadPieDataForWebSite(res){
+        // 基于准备好的dom，初始化echarts图表 折线图中 标注面积图
+        var myChart = echarts.init(document.getElementById('pieChart'));
+
+        var option = {
+            title : {
+                text: '访问量占比饼图',
+                subtext: '纯属虚构',
+                x:'center'
+            },
+            tooltip : {
+                trigger: 'item',
+                formatter: "{a} <br/>{b} : {c} ({d}%)"
+            },
+            legend: {
+                orient : 'vertical',
+                x : 'left',
+                data:res.browserType
+            },
+            toolbox: {
+                show : true,
+                feature : {
+                    mark : {show: true},
+                    dataView : {show: true, readOnly: false},
+                    magicType : {
+                        show: true,
+                        type: ['pie', 'funnel'],
+                        option: {
+                            funnel: {
+                                x: '25%',
+                                width: '50%',
+                                funnelAlign: 'left',
+                                max: 1548
+                            }
+                        }
+                    },
+                    restore : {show: true},
+                    saveAsImage : {show: true}
+                }
+            },
+            calculable : true,
+            series : [
+                {
+                    name:'访问来源',
+                    type:'pie',
+                    radius : '65%',
+                    center: ['50%', '60%'],
+                    data:res.data,
+                }
+            ]
+        };
+        // 为echarts对象加载数据
+        myChart.setOption(option);
+    }
+</script>

@@ -1,0 +1,83 @@
+<!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+<div id="radarChart" style="height:500px"></div>
+<script th:inline="javascript">
+    $(function () {
+        $.ajax({
+            url:'/queryRadarForWebsite',
+            type:'POST',
+            async:"true", //默认是true,异步
+            dataType:"json",
+            data:null,
+            success:function(res){
+                console.log(res);
+                loadRadarDataForEcharts(res);
+
+            }
+        });
+
+    });
+
+    function loadRadarDataForEcharts(res){
+        // 基于准备好的dom，初始化echarts图表 折线图中 标注面积图
+        var myChart = echarts.init(document.getElementById('radarChart'));
+
+        var option = {
+            title : {
+                text: 'POST vs GET',
+                subtext: '完全实况请求方式占比数据'
+            },
+            tooltip : {
+                trigger: 'axis'
+            },
+            legend: {
+                x : 'center',
+                data:["POST","GET"],
+            },
+            grid:{
+                x:50,
+                y:100,
+            },
+            toolbox: {
+                show : true,
+                feature : {
+                    mark : {show: true},
+                    dataView : {show: true, readOnly: false},
+                    restore : {show: true},
+                    saveAsImage : {show: true}
+                }
+            },
+            calculable : true,
+            polar : [
+                {
+                    indicator : [
+                        {text : 'Chrome', max  : 600},
+                        {text : 'Mozilla', max  : 600},
+                        {text : '360Browser', max  : 600},
+                        {text : 'QQBrowser', max  : 600},
+                        {text : 'Safari', max  : 600},
+                        {text : 'Opera', max  : 600}
+                    ],
+                    radius : 130
+                }
+            ],
+            series : [
+                {
+                    name: '完全实请求方式占比数据',
+                    type: 'radar',
+                    itemStyle: {
+                        normal: {
+                            areaStyle: {
+                                type: 'default'
+                            }
+                        }
+                    },
+                    data :res.result,
+
+                }
+            ]
+        };
+        // 为echarts对象加载数据
+        myChart.setOption(option);
+
+    }
+</script>

@@ -1,0 +1,151 @@
+<div id="timeLine" style="height:500px"></div>
+<script th:inline="javascript">
+        // 基于准备好的dom，初始化echarts图表 折线图中 标注面积图
+        var myChart = echarts.init(document.getElementById('timeLine'));
+
+        function createRandomItemStyle() {
+            return {
+                normal: {
+                    color: 'rgb(' + [
+                        Math.round(Math.random() * 160),
+                        Math.round(Math.random() * 160),
+                        Math.round(Math.random() * 160)
+                    ].join(',') + ')'
+                }
+            };
+        }
+
+        var option = {
+            title: {
+                text: '字符统计数据',
+                link: 'http://www.google.com/trends/hottrends'
+            },
+            tooltip: {
+                show: true
+            },
+            grid:{
+                x:50,
+                y:100,
+            },
+            series: [{
+                name: '字符统计数据',
+                type: 'wordCloud',
+                size: ['80%', '80%'],
+                textRotation : [0, 45, 90, -45],
+                textPadding: 0,
+                autoSize: {
+                    enable: true,
+                    minSize: 14
+                },
+                data: [
+                    {
+                        name: "Spark",
+                        value: 15000,
+                        itemStyle: {
+                            normal: {
+                                color: 'black'
+                            }
+                        }
+                    },
+                    {
+                        name: "Chrome",
+                        value: 6181,
+                        itemStyle: createRandomItemStyle()
+                    },
+                    {
+                        name: "HDFS",
+                        value: 14386,
+                        itemStyle: createRandomItemStyle()
+                    },
+                    {
+                        name: "KafKa",
+                        value: 4055,
+                        itemStyle: createRandomItemStyle()
+                    },
+                    {
+                        name: "Zookeeper",
+                        value: 2467,
+                        itemStyle: createRandomItemStyle()
+                    },
+                    {
+                        name: "YARN",
+                        value: 2244,
+                        itemStyle: createRandomItemStyle()
+                    },
+                    {
+                        name: "OOZIE",
+                        value: 1898,
+                        itemStyle: createRandomItemStyle()
+                    },
+                    {
+                        name: "HIVE",
+                        value: 6484,
+                        itemStyle: createRandomItemStyle()
+                    },
+                    {
+                        name: "NGINX",
+                        value: 15000,
+                        itemStyle: createRandomItemStyle()
+                    },
+                    {
+                        name: "Home",
+                        value: 965,
+                        itemStyle: createRandomItemStyle()
+                    },
+                    {
+                        name: "Hbase",
+                        value: 8847,
+                        itemStyle: createRandomItemStyle()
+                    },
+                    {
+                        name: "SparkStreming",
+                        value: 582,
+                        itemStyle: createRandomItemStyle()
+                    },
+                    {
+                        name: "Storm",
+                        value: 555,
+                        itemStyle: createRandomItemStyle()
+                    },
+                    {
+                        name: "JAVA",
+                        value: 23550,
+                        itemStyle: createRandomItemStyle()
+                    },
+                    {
+                        name: "Scala",
+                        value: 12462,
+                        itemStyle: createRandomItemStyle()
+                    },
+                    {
+                        name: "Python",
+                        value: 5366,
+                        itemStyle: createRandomItemStyle()
+                    },
+                    {
+                        name: "Rita Ora",
+                        value: 360,
+                        itemStyle: createRandomItemStyle()
+                    },
+                    {
+                        name: "Serena Williams",
+                        value: 282,
+                        itemStyle: createRandomItemStyle()
+                    },
+                    {
+                        name: "NCAA baseball tournament",
+                        value: 273,
+                        itemStyle: createRandomItemStyle()
+                    },
+                    {
+                        name: "Point Break",
+                        value: 265,
+                        itemStyle: createRandomItemStyle()
+                    }
+                ]
+            }]
+        };
+
+        // 为echarts对象加载数据
+        myChart.setOption(option);
+</script>

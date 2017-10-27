@@ -1,0 +1,114 @@
+<!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+<div id="squareChart" style="height:600px"></div>
+<script th:inline="javascript">
+   // <![CDATA[
+    $(function () {
+        console.log("运行程序");
+        $.ajax({
+            url:'/queryTiaoXingChart',
+            type:'POST',
+            async:"true", //默认是true,异步
+            dataType:"json",
+            data:null,
+            success:function(res){
+                console.log(res);
+                loadTiaoXingDuiBiChart(res);
+            }
+        });
+    });
+    // ]]>
+    function  loadTiaoXingDuiBiChart(res) {
+        // 基于准备好的dom，初始化echarts图表 折线图中 标注面积图
+        var myChart = echarts.init(document.getElementById('squareChart'));
+        var option = {
+            title : {
+                text: 'Windows vs AppleWebKit',
+                subtext: '浏览器访问数据'
+            },
+            tooltip : {
+                trigger: 'axis'
+            },
+            legend: {
+                data:res.type,
+            },
+            toolbox: {
+                show : true,
+                feature : {
+                    mark : {show: true},
+                    dataView : {show: true, readOnly: false},
+                    magicType : {show: true, type: ['line', 'bar']},
+                    restore : {show: true},
+                    saveAsImage : {show: true}
+                }
+            },
+            calculable : true,
+            grid: {y: 70, y2:30, x2:20},
+            xAxis : [
+                {
+                    type : 'category',
+                    data : ['Line','Bar','Scatter','K','Map']
+                },
+                {
+                    type : 'category',
+                    axisLine: {show:false},
+                    axisTick: {show:false},
+                    axisLabel: {show:false},
+                    splitArea: {show:false},
+                    splitLine: {show:false},
+                    data : ['Line','Bar','Scatter','K','Map']
+                }
+            ],
+            yAxis : [
+                {
+                    type : 'value',
+                    axisLabel:{formatter:'{value} ms'}
+                }
+            ],
+            series : [
+                {
+                    name:res.type[0],
+                    type:'bar',
+                    itemStyle: {normal: {color:'rgba(193,35,43,1)', label:{show:true}}},
+                    data:res.a1,
+                },
+                {
+                    name:res.type[1],
+                    type:'bar',
+                    itemStyle: {normal: {color:'rgba(181,195,52,1)', label:{show:true,textStyle:{color:'#27727B'}}}},
+                    data:res.a2,
+                },
+                {
+                    name:res.type[2],
+                    type:'bar',
+                    itemStyle: {normal: {color:'rgba(252,206,16,1)', label:{show:true,textStyle:{color:'#E87C25'}}}},
+                    data:res.a3,
+                },
+                {
+                    name:res.type[3],
+                    type:'bar',
+                    xAxisIndex:1,
+                    itemStyle: {normal: {color:'rgba(193,35,43,0.5)', label:{show:true,formatter:function(p){return p.value > 0 ? (p.value +'\n'):'';}}}},
+                    data:res.a4,
+                },
+                {
+                    name:res.type[4],
+                    type:'bar',
+                    xAxisIndex:1,
+                    itemStyle: {normal: {color:'rgba(181,195,52,0.5)', label:{show:true}}},
+                    data:res.a5,
+                },
+                {
+                    name:res.type[5],
+                    type:'bar',
+                    xAxisIndex:1,
+                    itemStyle: {normal: {color:'rgba(252,206,16,0.5)', label:{show:true,formatter:function(p){return p.value > 0 ? (p.value +'+'):'';}}}},
+                    data:res.a6,
+                }
+            ]
+        };
+
+        // 为echarts对象加载数据
+        myChart.setOption(option);
+    }
+
+</script>

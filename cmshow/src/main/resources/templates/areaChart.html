@@ -1,0 +1,103 @@
+<div id="areaChart" style="height:500px"></div>
+<script th:inline="javascript">
+    $(function () {
+        $.ajax({
+            url:'/queryAreaForWebsite',
+            type:'POST',
+            async:"true", //默认是true,异步
+            dataType:"json",
+            data:null,
+            success:function(res){
+                console.log(res);
+                loadAreaDataForWebSite(res);
+            }
+        });
+    });
+    function loadAreaDataForWebSite(res){
+        // 基于准备好的dom，初始化echarts图表 折线图中 标注面积图
+        var myChart = echarts.init(document.getElementById('areaChart'));
+        var option = {
+            tooltip : {
+                trigger: 'axis'
+            },
+            legend: {
+                data:res.browserType,
+            },
+            toolbox: {
+                show : true,
+                feature : {
+                    mark : {show: true},
+                    dataView : {show: true, readOnly: false},
+                    magicType : {show: true, type: ['line', 'bar', 'stack', 'tiled']},
+                    restore : {show: true},
+                    saveAsImage : {show: true}
+                }
+            },
+            calculable : true,
+            grid:{
+                x:50,
+                y:100,
+            },
+            xAxis : [
+                {
+                    type : 'category',
+                    boundaryGap : false,
+                    data : res.dateArray,
+                }
+            ],
+            yAxis : [
+                {
+                    type : 'value'
+                }
+            ],
+            series : [
+                {
+                    name:res.browserType[0],
+                    type:'line',
+                    stack: '总访问量',
+                    itemStyle: {normal: {areaStyle: {type: 'default'}}},
+                    data:res.a1
+                },
+                {
+                    name:res.browserType[1],
+                    type:'line',
+                    stack: '总访问量',
+                    itemStyle: {normal: {areaStyle: {type: 'default'}}},
+                    data:res.a2
+                },
+                {
+                    name:res.browserType[2],
+                    type:'line',
+                    stack: '总访问量',
+                    itemStyle: {normal: {areaStyle: {type: 'default'}}},
+                    data:res.a3
+                },
+                {
+                    name:res.browserType[3],
+                    type:'line',
+                    stack: '总访问量',
+                    itemStyle: {normal: {areaStyle: {type: 'default'}}},
+                    data:res.a4
+                },
+                {
+                    name:res.browserType[4],
+                    type:'line',
+                    stack: '总访问量',
+                    itemStyle: {normal: {areaStyle: {type: 'default'}}},
+                    data:res.a5
+                },
+                {
+                    name:res.browserType[5],
+                    type:'line',
+                    stack: '总访问量',
+                    itemStyle: {normal: {areaStyle: {type: 'default'}}},
+                    data:res.a6
+                }
+            ]
+        };
+        // 为echarts对象加载数据
+        myChart.setOption(option);
+    }
+</script>
+
+

@@ -1,0 +1,99 @@
+<!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+<div id="lineBarChart" style="height:500px"></div>
+<script th:src="@{jquery-3.1.1.js}" type="text/javascript"></script>
+<script th:inline="javascript">
+    $(function () {
+        console.log("运行程序");
+        $.ajax({
+            url:'/loadLineBarForChart',
+            type:'POST',
+            async:"true", //默认是true,异步
+            dataType:"json",
+            data:null,
+            success:function(result){
+                console.log(result);
+                loadLineBarForChart(result);
+
+            }
+        });
+
+    });
+    function loadLineBarForChart(result){
+        // 基于准备好的dom，初始化echarts图表 折线图中 标注面积图
+        var myChart = echarts.init(document.getElementById('lineBarChart'));
+        var option = {
+            title : {
+                text: '某网站的访问量和浏览次数',
+                subtext: '纯属虚构'
+            },
+            tooltip : {
+                trigger: 'axis'
+            },
+            legend: {
+                data:['访问量','浏览次数']
+            },
+            toolbox: {
+                show : true,
+                feature : {
+                    mark : {show: true},
+                    dataView : {show: true, readOnly: false},
+                    magicType : {show: true, type: ['line', 'bar']},
+                    restore : {show: true},
+                    saveAsImage : {show: true}
+                }
+            },
+            calculable : true,
+            grid:{
+                x:50,
+                y:100,
+            },
+            xAxis : [
+                {
+                    type : 'category',
+                    data : result.dateArray,
+                }
+            ],
+            yAxis : [
+                {
+                    type : 'value'
+                }
+            ],
+            series : [
+                {
+                    name:'访问量',
+                    type:'bar',
+                    data:result.totalPv,
+                    markPoint : {
+                        data : [
+                            {type : 'max', name: '最大值'},
+                            {type : 'min', name: '最小值'}
+                        ]
+                    },
+                    markLine : {
+                        data : [
+                            {type : 'average', name: '平均值'}
+                        ]
+                    }
+                },
+                {
+                    name:'浏览量',
+                    type:'bar',
+                    data:result.totalCounts,
+                    markPoint : {
+                        data : [
+                            {name : '年最高', value : 110320, xAxis:8, yAxis: 110320, symbolSize:18},
+                            {name : '年最低', value : 5500, xAxis: 11, yAxis: 3}
+                        ]
+                    },
+                    markLine : {
+                        data : [
+                            {type : 'average', name : '平均值'}
+                        ]
+                    }
+                }
+            ]
+        };
+        // 为echarts对象加载数据
+        myChart.setOption(option);
+    }
+</script>
